@@ -1,6 +1,5 @@
 use std::ptr;
 
-struct Bar;
 struct Foo {
     x: i32,
     p: *mut Bar
@@ -11,6 +10,20 @@ struct Bar {
 }
 
 fn main () {
-    let mut foo = Foo { x: 0, p: ptr::null_mut() };
-    println!("foo = x:{}", foo.x)
+    // Init
+    let mut foo = Foo { x: 10, p: ptr::null_mut() };
+    let mut bar = Bar { x: 20, p: &mut foo};
+    foo.p = &mut bar;
+
+    // Print x
+    println!("foo.x = {}", foo.x);
+    println!("bar.x = {}", bar.x);
+
+    // Deref
+    unsafe {
+        let foopx = (*foo.p).x;
+        let barpx = (*bar.p).x;
+        println!("(foo.p).x = {}", foopx);
+        println!("(bar.p).x = {}", barpx);
+    }
 }
